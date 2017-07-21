@@ -15,7 +15,7 @@ dataResource.then(data => {
 })
 
 function writeIntoFile(json) {
-  fs.writeFile(__dirname + '/../src/database/ubike-db.json', json, 'utf8', (err) => {
+  fs.writeFile(__dirname + '/../src/api/v1/ubike-db.json', json, 'utf8', (err) => {
     if (err) {
       throw new Error(err)
     }
