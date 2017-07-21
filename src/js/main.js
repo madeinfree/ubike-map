@@ -89,26 +89,27 @@
 
         marker.addListener('click', openInfoWindow)
       })
+
+      loadingBar.classList.remove('map-loading-bar-display')
+      loadingBar.classList.add('map-loading-bar-display-hidden')
     }
 
     function createPersonGPSMarker() {
-      navigator.geolocation.getCurrentPosition(function(location) {
-        const lat = location.coords.latitude
-        const lng = location.coords.longitude
-        new google.maps.Marker({
-          position: { lat: lat, lng: lng },
-          map: map,
-          title: '個人位置',
-          label: {
-            fontFamily: 'Fontawesome',
-            text: '\uf007'
-          }
-        })
-      const center = new google.maps.LatLng(lat, lng);
-      map.panTo(center);
-      loadingBar.classList.remove('map-loading-bar-display')
-      loadingBar.classList.add('map-loading-bar-display-hidden')
-      });
+      // navigator.geolocation.getCurrentPosition(function(location) {
+      //   const lat = location.coords.latitude
+      //   const lng = location.coords.longitude
+      //   new google.maps.Marker({
+      //     position: { lat: lat, lng: lng },
+      //     map: map,
+      //     title: '個人位置',
+      //     label: {
+      //       fontFamily: 'Fontawesome',
+      //       text: '\uf007'
+      //     }
+      //   })
+      // const center = new google.maps.LatLng(lat, lng);
+      // map.panTo(center);
+      // });
     }
   }
 }(window, document, $))
