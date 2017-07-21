@@ -6,12 +6,25 @@ self.addEventListener('message', function(e) {
      successTask(this.responseText)
     }
   };
+  const _that = self
+  xhttp.onprogress = function(event) {
+    if(event.lengthComputable) {
+      _that.postMessage({
+        status: 'progress',
+        data: (event.loaded / event.total) * 100
+      });
+    }
+  };
   xhttp.open('GET', apiUri, true);
   xhttp.send();
   function successTask(data) {
     try {
       const stringParseIntoJSON = JSON.parse(data)
-      self.postMessage(stringParseIntoJSON);
+      self.postMessage({
+        status: 'done',
+        data: stringParseIntoJSON
+      });
+      self.close()
     } catch(err) {
       throw new Error(err)
     }

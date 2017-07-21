@@ -9,7 +9,7 @@
     function createLoadingBar() {
       loadingBar = document.createElement('div')
       loadingBar.id = 'map-loading-bar'
-      loadingBar.innerHTML = '找尋資料與位置中...'
+      loadingBar.innerHTML = '找尋資料與位置中... 0%'
       loadingBar.classList.add('map-loading-bar-display')
       $(loadingBar).insertBefore($('#map'))
     }
@@ -20,7 +20,14 @@
         apiUri: '/api/v1/ubike-db.json'
       })
       worker.addEventListener('message', function(e) {
-        successTask(e.data);
+        const workerData = e.data
+        if (workerData.status === 'progress') {
+          const progressPercent = parseInt(workerData.data, 10)
+          loadingBar.innerText = '找尋資料與位置中...' + progressPercent + '%'
+        }
+        if (workerData.status === 'done') {
+          successTask(workerData.data);
+        }
       }, false);
     }
 
@@ -97,7 +104,6 @@
 
         marker.addListener('click', openInfoWindow)
       })
-
       loadingBar.classList.remove('map-loading-bar-display')
       loadingBar.classList.add('map-loading-bar-display-hidden')
     }
