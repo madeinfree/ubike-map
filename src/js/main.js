@@ -4,7 +4,8 @@
 
   function asyncToGetUbikeData() {
 
-    let loadingBar = null
+    let loadingBar = null,
+        worker = null
     function createLoadingBar() {
       loadingBar = document.createElement('div')
       loadingBar.id = 'map-loading-bar'
@@ -13,11 +14,18 @@
       $(loadingBar).insertBefore($('#map'))
     }
 
-    createLoadingBar()
+    function createWorker() {
+      worker = new Worker('/js/worker/dataWorker.js')
+      worker.postMessage({
+        apiUri: '/api/v1/ubike-db.json'
+      })
+      worker.addEventListener('message', function(e) {
+        successTask(e.data);
+      }, false);
+    }
 
-    $.ajax('/api/v1/ubike-db.json', {
-      success: successTask
-    })
+    createLoadingBar()
+    createWorker()
 
     function successTask(data) {
       if (data && data.success) {
