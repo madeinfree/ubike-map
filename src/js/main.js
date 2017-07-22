@@ -101,7 +101,10 @@
           map: map,
           title: site.sna,
           icon: markerIcon,
-          label: remainBike
+          label: {
+            text: remainBike,
+            color: parseInt(siteActive, 10) !== 1 ? 'white' : 'black'
+          }
         })
 
         marker.addListener('click', openInfoWindow)
@@ -118,11 +121,26 @@
          */
         function markerLabel(remainBike, siteActive) {
           if (parseInt(remainBike, 10) > 0 && parseInt(siteActive, 10) === 1) {
-            return '/images/status/can-use-marker.png'
+            return {
+              url: '/images/status/can-use-marker.png',
+              origin: new google.maps.Point(0, 0),
+              anchor: new google.maps.Point(0, 20),
+              labelOrigin: new google.maps.Point(12, 12)
+            }
           } else if (parseInt(remainBike, 10) === 0 && parseInt(siteActive, 10) === 1) {
-            return '/images/status/cant-use-marker.png'
+            return {
+              url: '/images/status/cant-use-marker.png',
+              origin: new google.maps.Point(0, 0),
+              anchor: new google.maps.Point(0, 20),
+              labelOrigin: new google.maps.Point(12, 12)
+            }
           } else if (parseInt(siteActive, 10) !== 1) {
-            return '/images/status/not-active-marker.png'
+            return {
+              url: '/images/status/not-active-marker.png',
+              origin: new google.maps.Point(0, 0),
+              anchor: new google.maps.Point(0, 20),
+              labelOrigin: new google.maps.Point(12, 12)
+            }
           }
         }
 
