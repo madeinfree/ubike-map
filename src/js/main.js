@@ -183,7 +183,7 @@
         return marker
       })
       new MarkerClusterer(map, markers, {
-          imagePath: 'http://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
+          imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
         }
       );
       loadingBar.classList.remove('map-loading-bar-display')
