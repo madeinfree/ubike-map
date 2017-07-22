@@ -91,7 +91,7 @@
             <div>地址(中文)：${siteAddressTW}</div>
             <div>地址(EN)：${siteAddressEN}</div>
             <div>是否還在營運：${siteActive === '1' ? '營運中' : '已暫停營運'}</div>
-            <div>資料最後更新時間：${updateTime}</div>
+            <div>資料最後更新時間：${cutUpdatedDate(updateTime)}</div>
           `
         });
 
@@ -142,6 +142,15 @@
               labelOrigin: new google.maps.Point(12, 12)
             }
           }
+        }
+
+        function cutUpdatedDate(date) {
+          return date.slice(0, 4) + '/' +
+                  date.slice(4, 6) + '/' +
+                  date.slice(6, 8) + ' ' +
+                  date.slice(8, 10) + ':' +
+                  date.slice(10, 12) + ':' +
+                  date.slice(12, 14)
         }
 
         return marker
