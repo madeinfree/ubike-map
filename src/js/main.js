@@ -93,13 +93,14 @@
           `
         });
 
+        const markerLabelText = siteActive === '1' ? '\uf206' : '\uf05e'
         const marker = new google.maps.Marker({
           position: { lat: parseLetStringIntoFloat, lng: parseLngStringIntoFloat },
           map: map,
           title: site.sna,
           label: {
             fontFamily: 'Fontawesome',
-            text: '\uf206'
+            text: markerLabelText
           }
         })
 
