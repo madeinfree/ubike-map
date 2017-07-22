@@ -84,7 +84,7 @@
             <div>站點名稱(中文)：${siteNameTW}</div>
             <div>站點名稱(EN)：${siteNameEN}</div>
             <div>總共車位：${totalBike}</div>
-            <div>剩餘車位：${remainBike}</div>
+            <div>可租車位：${remainBike}</div>
             <div>可還車位：${returnBike}</div>
             <div>地址(中文)：${siteAddressTW}</div>
             <div>地址(EN)：${siteAddressEN}</div>
