@@ -203,8 +203,6 @@
             text: '\uf007'
           }
         })
-      const center = new google.maps.LatLng(lat, lng);
-      map.panTo(center);
       });
     }
   }
