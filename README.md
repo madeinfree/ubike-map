@@ -14,6 +14,10 @@
     - 可還車位
     - 營運狀況（營運中、已結束營運）
 
+  - 內部功能
+    - 優化標記群集（markerclusterer）
+    - 使用 WebWorker API
+
 ## API
 
 API 大約每 10 - 30 分鐘會更新一次
