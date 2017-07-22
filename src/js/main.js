@@ -67,7 +67,7 @@
 
     function createMarker(dataResult) {
       const mapData = dataResult
-      mapData.map((site, index) => {
+      const markers  = mapData.map((site, index) => {
         const parseLetStringIntoFloat = parseFloat(site.lat),
               parseLngStringIntoFloat = parseFloat(site.lng),
               siteActive = site.act,
@@ -108,7 +108,13 @@
         }
 
         marker.addListener('click', openInfoWindow)
+
+        return marker
       })
+      new MarkerClusterer(map, markers, {
+          imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
+        }
+      );
       loadingBar.classList.remove('map-loading-bar-display')
       loadingBar.classList.add('map-loading-bar-display-hidden')
     }
