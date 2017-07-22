@@ -2,6 +2,9 @@
 
   w.asyncToGetUbikeData = asyncToGetUbikeData
 
+  const INPROGRESS = 'progress',
+        DONE = 'done'
+
   function asyncToGetUbikeData() {
 
     let loadingBar = null,
@@ -21,12 +24,14 @@
       })
       worker.addEventListener('message', function(e) {
         const workerData = e.data
-        if (workerData.status === 'progress') {
-          const progressPercent = parseInt(workerData.data, 10)
-          loadingBar.innerText = '找尋資料與位置中...' + progressPercent + '%'
-        }
-        if (workerData.status === 'done') {
-          successTask(workerData.data);
+        switch(workerData.status) {
+          case INPROGRESS:
+            const progressPercent = parseInt(workerData.data, 10)
+            loadingBar.innerText = '找尋資料與位置中...' + progressPercent + '%'
+          break
+          case DONE:
+            successTask(workerData.data);
+          break
         }
       }, false);
     }
