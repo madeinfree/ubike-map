@@ -3,7 +3,9 @@
   w.asyncToGetUbikeData = asyncToGetUbikeData
 
   const INPROGRESS = 'progress',
-        DONE = 'done'
+        DONE = 'done',
+        streets = new Set(),
+        noActiveStreets = []
 
   function asyncToGetUbikeData() {
 
@@ -61,6 +63,7 @@
       getMap()
       createMarker(dataResult)
       createPersonGPSMarker()
+      panelController(map)
     }
 
     function getMap() {
@@ -77,10 +80,24 @@
               siteNameEN = site.snaen,
               siteAddressTW = site.ar,
               siteAddressEN = site.aren,
+              siteArea = site.sarea,
               totalBike = site.tot,
               remainBike = site.sbi,
               returnBike = site.bemp,
               updateTime = site.mday
+
+        /*
+         * 記錄可用區域
+         */
+        streets.add(siteArea)
+        if (siteActive !== '1') {
+          noActiveStreets.push({
+            siteNameTW,
+            siteNameEN,
+            parseLetStringIntoFloat,
+            parseLngStringIntoFloat
+          })
+        }
         const infowindow = new google.maps.InfoWindow({
           content: `
             <div>站點名稱(中文)：${siteNameTW}</div>
@@ -186,11 +203,13 @@
    * 控制側邊欄位
    */
 
-  function panelController() {
+  function panelController(map) {
     const panel = $('#control-panel'),
-           panelArrow = $('#control-panel-handle')
+           panelArrow = $('#control-panel-handle'),
+           panelTipsTotalArea = $('#total-area'),
+           panelTipsTotalNoActiveArea = $('#total-no-active-area')
     let panelArrowIsRight = false
-    panelArrow.on('click', function(e) {
+    panelArrow.on('click', e => {
       if (panelArrowIsRight) {
         panelArrow[0].classList.remove('fa-arrow-left')
         panelArrow[0].classList.add('fa-arrow-right')
@@ -207,8 +226,30 @@
         panelArrowIsRight = true
       }
     })
+    const streetsIntoHTML = Array.from(streets).reduce((curr, street, index) => {
+      return index === 0 ? curr + street : curr + '、' + street
+    }, '')
+    const noActiveAreaIntoHTML = Array.from(noActiveStreets).reduce((curr, street, index) => {
+      return index === 0 ?  curr + `<u><span id="no-active-streets-${index}">` + street.siteNameTW + '(' + street.siteNameEN + ')' + '</span></u>'
+        :
+        curr + `<span id="no-active-streets-${index}">` + '、' + '<u>' + street.siteNameTW + '(' + street.siteNameEN + ')' + '</span></u>'
+    }, '')
+    panelTipsTotalArea.html(streetsIntoHTML)
+    panelTipsTotalNoActiveArea.html(noActiveAreaIntoHTML)
+    /*
+     * 綁定已結束營運位置
+     */
+    noActiveStreets.forEach((noActiveStreet, index) => {
+      const street = $(`#no-active-streets-${index}`)
+      street.css({
+        cursor: 'pointer'
+      })
+      street.on('click', () => {
+        const center = new google.maps.LatLng(noActiveStreet.parseLetStringIntoFloat, noActiveStreet.parseLngStringIntoFloat);
+        map.panTo(center)
+        map.setZoom(17)
+      })
+    })
   }
-
-  panelController()
 
 }(window, document, $))
