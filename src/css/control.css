@@ -1,33 +1,43 @@
-#control-panel {
-  position: absolute;
-  width: 400px;
-  height: 100%;
-  background-color: rgba(255, 255, 255, .9);
-  top: 0;
-  left: -370px;
-  transition: all .3s;
+@media screen and (min-width: 480px) {
+  #control-panel {
+    position: absolute;
+    width: 400px;
+    height: 100%;
+    background-color: rgba(255, 255, 255, .9);
+    top: 0;
+    left: -370px;
+    transition: all .3s;
+  }
+
+  #control-panel-handle {
+    position: absolute;
+    right: 10px;
+    top: 6px;
+    cursor: pointer;
+  }
+
+  #control-panel-tips {
+    padding: 10px;
+  }
+
+  #control-panel-bottom-logo {
+    position: absolute;
+    text-align: center;
+    width: 100%;
+    bottom: 0;
+  }
+
+  #control-panel-bottom-logo a {
+    font-size: 12px;
+    color: black;
+    text-decoration: none;
+  }
+
 }
 
-#control-panel-handle {
-  position: absolute;
-  right: 10px;
-  top: 6px;
-  cursor: pointer;
-}
+@media screen and (max-width: 479px) {
+  #control-panel {
+    display: none;
+  }
 
-#control-panel-tips {
-  padding: 10px;
-}
-
-#control-panel-bottom-logo {
-  position: absolute;
-  text-align: center;
-  width: 100%;
-  bottom: 0;
-}
-
-#control-panel-bottom-logo a {
-  font-size: 12px;
-  color: black;
-  text-decoration: none;
 }
