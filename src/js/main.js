@@ -181,4 +181,34 @@
       // });
     }
   }
+
+  /*
+   * 控制側邊欄位
+   */
+
+  function panelController() {
+    const panel = $('#control-panel'),
+           panelArrow = $('#control-panel-handle')
+    let panelArrowIsRight = false
+    panelArrow.on('click', function(e) {
+      if (panelArrowIsRight) {
+        panelArrow[0].classList.remove('fa-arrow-left')
+        panelArrow[0].classList.add('fa-arrow-right')
+        panel.css({
+          left: '-370px'
+        })
+        panelArrowIsRight = false
+      } else {
+        panelArrow[0].classList.remove('fa-arrow-right')
+        panelArrow[0].classList.add('fa-arrow-left')
+        panel.css({
+          left: '0px'
+        })
+        panelArrowIsRight = true
+      }
+    })
+  }
+
+  panelController()
+
 }(window, document, $))
