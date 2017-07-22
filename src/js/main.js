@@ -275,7 +275,7 @@
          cursor: 'pointer'
        })
        street.on('click', () => {
-         const center = new google.maps.LatLng(noActiveStreet.parseLetStringIntoFloat, noActiveStreet.parseLngStringIntoFloat);
+         const center = new google.maps.LatLng(noSiteStreet.parseLetStringIntoFloat, noSiteStreet.parseLngStringIntoFloat);
          map.panTo(center)
          map.setZoom(17)
        })
