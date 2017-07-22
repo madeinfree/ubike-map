@@ -1,3 +1,4 @@
+const https = require('https');
 const express = require('express')
 const app = express()
 
@@ -14,6 +15,14 @@ app.get('/', (req, res) => {
   res.render('index.html')
 })
 
-app.listen(APP_PORT, () => {
-  console.log(APP_NAME + ' listen on port ' + APP_PORT)
-})
+if (process.env.NODE_ENV === 'production') {
+  const options = {
+    key: fs.readFileSync(process.env.UBIKE_MAP_KEY_PATH),
+    cert: fs.readFileSync(process.env.UBIKE_MAP_CERT_PATH)
+  };
+  https.createServer(options, app).listen(APP_PORT);
+} else {
+  app.listen(APP_PORT, () => {
+    console.log(APP_NAME + ' listen on port ' + APP_PORT)
+  })
+}
