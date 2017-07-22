@@ -5,7 +5,8 @@
   const INPROGRESS = 'progress',
         DONE = 'done',
         streets = new Set(),
-        noActiveStreets = []
+        noActiveStreets = [],
+        noSiteStreets = []
 
   function asyncToGetUbikeData() {
 
@@ -98,6 +99,15 @@
             parseLngStringIntoFloat
           })
         }
+        if (parseInt(remainBike, 10) === 0 && parseInt(siteActive, 10) === 1) {
+          noSiteStreets.push({
+            siteNameTW,
+            siteNameEN,
+            parseLetStringIntoFloat,
+            parseLngStringIntoFloat
+          })
+        }
+
         const infowindow = new google.maps.InfoWindow({
           content: `
             <div>站點名稱(中文)：${siteNameTW}</div>
@@ -208,6 +218,7 @@
            panelArrow = $('#control-panel-handle'),
            panelTipsTotalArea = $('#total-area'),
            panelTipsTotalNoActiveArea = $('#total-no-active-area')
+           panelTipsTotalNoSiteArea = $('#total-no-site-area')
     let panelArrowIsRight = false
     panelArrow.on('click', e => {
       if (panelArrowIsRight) {
@@ -234,8 +245,15 @@
         :
         curr + `<span id="no-active-streets-${index}">` + '、' + '<u>' + street.siteNameTW + '(' + street.siteNameEN + ')' + '</span></u>'
     }, '')
+    const noSiteAreaIntoHTML = Array.from(noSiteStreets).reduce((curr, street, index) => {
+      return index === 0 ?  curr + `<u><span id="no-site-streets-${index}">` + street.siteNameTW + '(' + street.siteNameEN + ')' + '</span></u>'
+        :
+        curr + `<span id="no-site-streets-${index}">` + '、' + '<u>' + street.siteNameTW + '(' + street.siteNameEN + ')' + '</span></u>'
+    }, '')
     panelTipsTotalArea.html(streetsIntoHTML)
     panelTipsTotalNoActiveArea.html(noActiveAreaIntoHTML)
+    panelTipsTotalNoSiteArea.html(noSiteAreaIntoHTML === '' ? '無' : noSiteAreaIntoHTML)
+
     /*
      * 綁定已結束營運位置
      */
@@ -250,6 +268,20 @@
         map.setZoom(17)
       })
     })
+    /*
+     * 綁定無車位位置
+     */
+     noSiteStreets.forEach((noSiteStreet, index) => {
+       const street = $(`#no-site-streets-${index}`)
+       street.css({
+         cursor: 'pointer'
+       })
+       street.on('click', () => {
+         const center = new google.maps.LatLng(noActiveStreet.parseLetStringIntoFloat, noActiveStreet.parseLngStringIntoFloat);
+         map.panTo(center)
+         map.setZoom(17)
+       })
+     })
   }
 
 }(window, document, $))
