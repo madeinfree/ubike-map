@@ -191,21 +191,21 @@
     }
 
     function createPersonGPSMarker() {
-      // navigator.geolocation.getCurrentPosition(function(location) {
-      //   const lat = location.coords.latitude
-      //   const lng = location.coords.longitude
-      //   new google.maps.Marker({
-      //     position: { lat: lat, lng: lng },
-      //     map: map,
-      //     title: '個人位置',
-      //     label: {
-      //       fontFamily: 'Fontawesome',
-      //       text: '\uf007'
-      //     }
-      //   })
-      // const center = new google.maps.LatLng(lat, lng);
-      // map.panTo(center);
-      // });
+      navigator.geolocation.watchPosition(function(location) {
+        const lat = location.coords.latitude
+        const lng = location.coords.longitude
+        new google.maps.Marker({
+          position: { lat: lat, lng: lng },
+          map: map,
+          title: '個人位置',
+          label: {
+            fontFamily: 'Fontawesome',
+            text: '\uf007'
+          }
+        })
+      const center = new google.maps.LatLng(lat, lng);
+      map.panTo(center);
+      });
     }
   }
 
