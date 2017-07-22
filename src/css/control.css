@@ -18,3 +18,8 @@
 #control-panel-tips {
   padding: 10px;
 }
+
+#control-panel-bottom-logo {
+  position: absolute;
+  bottom: 0;
+}
