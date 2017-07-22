@@ -100,7 +100,8 @@
           position: { lat: parseLetStringIntoFloat, lng: parseLngStringIntoFloat },
           map: map,
           title: site.sna,
-          icon: markerIcon
+          icon: markerIcon,
+          label: remainBike
         })
 
         marker.addListener('click', openInfoWindow)
