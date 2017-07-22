@@ -111,10 +111,10 @@
 
         return marker
       })
-      new MarkerClusterer(map, markers, {
-          imagePath: 'http://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
-        }
-      );
+      // new MarkerClusterer(map, markers, {
+      //     imagePath: 'http://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
+      //   }
+      // );
       loadingBar.classList.remove('map-loading-bar-display')
       loadingBar.classList.add('map-loading-bar-display-hidden')
     }
