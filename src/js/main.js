@@ -52,7 +52,9 @@
         lat: 25.0479146,
         lng: 121.5150967
       },
-      zoom: 13
+      zoom: 13,
+      mapTypeControl: false,
+      streetViewControl: false
     }
 
     function initMap(dataResult) {
@@ -93,22 +95,35 @@
           `
         });
 
-        const markerLabelText = siteActive === '1' ? '\uf206' : '\uf05e'
+        const markerIcon = markerLabel(remainBike, siteActive)
         const marker = new google.maps.Marker({
           position: { lat: parseLetStringIntoFloat, lng: parseLngStringIntoFloat },
           map: map,
           title: site.sna,
-          label: {
-            fontFamily: 'Fontawesome',
-            text: markerLabelText
-          }
+          icon: markerIcon
         })
+
+        marker.addListener('click', openInfoWindow)
 
         function openInfoWindow() {
           infowindow.open(map, marker)
         }
 
-        marker.addListener('click', openInfoWindow)
+        /*
+         * 確認地圖 label 顏色
+         * 綠色 - 正常營運，尚有車位
+         * 橘色 - 正常營運，無車位
+         * 黑色 - 停止營運
+         */
+        function markerLabel(remainBike, siteActive) {
+          if (parseInt(remainBike, 10) > 0 && parseInt(siteActive, 10) === 1) {
+            return '/images/status/can-use-marker.png'
+          } else if (parseInt(remainBike, 10) === 0 && parseInt(siteActive, 10) === 1) {
+            return '/images/status/cant-use-marker.png'
+          } else if (parseInt(siteActive, 10) !== 1) {
+            return '/images/status/not-active-marker.png'
+          }
+        }
 
         return marker
       })
