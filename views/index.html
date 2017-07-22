@@ -8,10 +8,25 @@
     <meta name="description" content="ubike-map 是由 letfreecode 利用政府開放資料作成，提供基本功能，快速查詢 ubike 各車站狀況，找到離你最近的 ubike 站點，也不用因為沒了車而白跑一趟！">
     <link rel="stylesheet" href="/css/global.css">
     <link rel="stylesheet" href="/css/map.css">
+    <link rel="stylesheet" href="/css/control.css">
     <link rel="stylesheet" href="/vendor/font-awesome-4.7.0/css/font-awesome.min.css">
   </head>
   <body>
     <div id="map"></div>
+    <div id="control-panel">
+      <i id="control-panel-handle" class="fa fa-arrow-left"></i>
+      <div id="control-panel-tips">
+        <h2>標記提示</h2>
+        <p>
+          <img src="/images/status/can-use-marker.png" />
+          <span>尚有車位</span>
+          <img src="/images/status/cant-use-marker.png" />
+          <span>無車位</span>
+          <img src="/images/status/not-active-marker.png" />
+          <span>停止營運</span>
+        </p>
+      </div>
+    </div>
     <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDnj4tdgYvlz4dAZnfJHgzk477-Xec5ee4&callback=asyncToGetUbikeData" async defer></script>
     <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
