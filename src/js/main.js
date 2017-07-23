@@ -190,11 +190,15 @@
       loadingBar.classList.add('map-loading-bar-display-hidden')
     }
 
+    let personMarker = null
     function createPersonGPSMarker() {
       navigator.geolocation.watchPosition(function(location) {
         const lat = location.coords.latitude
         const lng = location.coords.longitude
-        new google.maps.Marker({
+        if (personMarker) {
+          personMarker.setMap(null)
+        }
+        personMarker = new google.maps.Marker({
           position: { lat: lat, lng: lng },
           map: map,
           title: '個人位置',
