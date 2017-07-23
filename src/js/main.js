@@ -43,8 +43,8 @@
     createWorker()
 
     function successTask(data) {
-      if (data && data.success) {
-        const dataResult = data.result.records
+      if (data) {
+        const dataResult = data
         initMap(dataResult)
       }
     }

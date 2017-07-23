@@ -8,14 +8,36 @@ const dataResource = new Promise((resolve, reject) => request(
   }
 ))
 
-dataResource.then(data => {
+// dataResource.then(data => {
+//   if (data) {
+//     writeIntoFile(data, 'ubike-db.json')
+//   }
+// })
+
+const taipeiDataResource = new Promise((resolve, reject) => request(
+  {
+    method: 'GET',
+    uri: 'http://data.taipei/youbike',
+    gzip: true
+  }, (err, res, body) => {
+    resolve(body)
+  }
+))
+
+Promise.all([dataResource, taipeiDataResource]).then(data => {
   if (data) {
-    writeIntoFile(data)
+    const parseTaipeiDataIntoJSON = JSON.parse(data[1])
+    const serializeDataIntoObject = Object.keys(parseTaipeiDataIntoJSON.retVal).map(key => {
+      return parseTaipeiDataIntoJSON.retVal[key]
+    })
+    const concatTwoCityData = JSON.parse(data[0]).result.records.concat(serializeDataIntoObject)
+    const stringifyData = JSON.stringify(concatTwoCityData)
+    writeIntoFile(stringifyData, 'ubike-db.json')
   }
 })
 
-function writeIntoFile(json) {
-  fs.writeFile(__dirname + '/../src/api/v1/ubike-db.json', json, 'utf8', (err) => {
+function writeIntoFile(json, filename) {
+  fs.writeFile(__dirname + '/../src/api/v1/' + filename, json, 'utf8', (err) => {
     if (err) {
       throw new Error(err)
     }
