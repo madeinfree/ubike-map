@@ -1,10 +1,13 @@
 const https = require('https')
 const fs = require('fs')
+const cors = require('cors')
 const express = require('express')
 const app = express()
 
 const APP_NAME = 'ubike-map'
 const APP_PORT = 3000
+
+app.use(cors())
 
 app.set("view options", { layout: false })
 app.use(express.static(__dirname + '/../views'))
