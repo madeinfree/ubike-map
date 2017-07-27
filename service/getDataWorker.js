@@ -8,12 +8,6 @@ const dataResource = new Promise((resolve, reject) => request(
   }
 ))
 
-// dataResource.then(data => {
-//   if (data) {
-//     writeIntoFile(data, 'ubike-db.json')
-//   }
-// })
-
 const taipeiDataResource = new Promise((resolve, reject) => request(
   {
     method: 'GET',

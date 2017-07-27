@@ -209,6 +209,46 @@
         })
       });
     }
+
+    /*
+     * 其他功能
+     * wifi
+     */
+    // const wifiButton = $('#other-feature-wifi')
+    // let wifiData = null,
+    //     wifiDataIsLoaded = false
+    // wifiButton.on('click', (e) => {
+    //   const wifiData = new Promise((resolve, reject) => {
+    //     $.ajax('/api/v1/wifi-db.json', {
+    //       success: (ajaxData) => {
+    //         resolve(ajaxData)
+    //       }
+    //     })
+    //   })
+    //   wifiData.then(response => {
+    //     wifiDataIsLoaded = true
+    //     insertWifiDataIntoMap(response)
+    //   })
+    // })
+    // function insertWifiDataIntoMap(wifiData) {
+    //   console.log(wifiData[0])
+    //   const wifiMarkers = wifiData.map((wifi, index) => {
+    //     const parseLatStringIntoWifiFloat = parseFloat(wifi.latitude),
+    //           parseLngStringIntowifiFloat = parseFloat(wifi.longitude),
+    //           wifiCompany = wifi.company,
+    //           wifiSpotName = wifi.spot_name
+    //     const wifiMarkers = new google.maps.Marker({
+    //       position: { lat: parseLatStringIntoWifiFloat, lng: parseLngStringIntowifiFloat },
+    //       map: map,
+    //       title: wifiSpotName
+    //     })
+    //     return wifiMarkers
+    //   })
+    //   new MarkerClusterer(map, wifiMarkers, {
+    //       imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
+    //     }
+    //   );
+    // }
   }
 
   /*
