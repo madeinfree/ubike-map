@@ -65,15 +65,20 @@
       createMarker(dataResult)
       createPersonGPSMarker()
       panelController(map)
+      // imageUploadFeatures(map)
+      typhoon(map)
     }
 
     function getMap() {
       map = new google.maps.Map(document.getElementById('map'), defaultSetting)
     }
 
+    let markers = [],
+        markerCluster = null
+    const closeSiteCheckbox = $('#other-features-close-site')
     function createMarker(dataResult) {
       const mapData = dataResult
-      const markers  = mapData.map((site, index) => {
+      markers  = mapData.map((site, index) => {
         const parseLetStringIntoFloat = parseFloat(site.lat),
               parseLngStringIntoFloat = parseFloat(site.lng),
               siteActive = site.act,
@@ -120,7 +125,7 @@
             <div>是否還在營運：${siteActive === '1' ? '營運中' : '已暫停營運'}</div>
             <div>資料最後更新時間：${cutUpdatedDate(updateTime)}</div>
           `
-        });
+        })
 
         const markerIcon = markerLabel(remainBike, siteActive)
         const marker = new google.maps.Marker({
@@ -182,13 +187,24 @@
 
         return marker
       })
-      new MarkerClusterer(map, markers, {
+      markerCluster = new MarkerClusterer(map, markers, {
           imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
         }
       );
       loadingBar.classList.remove('map-loading-bar-display')
       loadingBar.classList.add('map-loading-bar-display-hidden')
     }
+
+    closeSiteCheckbox.on('click', (e) => {
+      if(e.target.checked) {
+        markerCluster.clearMarkers();
+      } else {
+        markerCluster = new MarkerClusterer(map, markers, {
+            imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
+          }
+        );
+      }
+    })
 
     let personMarker = null
     function createPersonGPSMarker() {
@@ -209,46 +225,6 @@
         })
       });
     }
-
-    /*
-     * 其他功能
-     * wifi
-     */
-    // const wifiButton = $('#other-feature-wifi')
-    // let wifiData = null,
-    //     wifiDataIsLoaded = false
-    // wifiButton.on('click', (e) => {
-    //   const wifiData = new Promise((resolve, reject) => {
-    //     $.ajax('/api/v1/wifi-db.json', {
-    //       success: (ajaxData) => {
-    //         resolve(ajaxData)
-    //       }
-    //     })
-    //   })
-    //   wifiData.then(response => {
-    //     wifiDataIsLoaded = true
-    //     insertWifiDataIntoMap(response)
-    //   })
-    // })
-    // function insertWifiDataIntoMap(wifiData) {
-    //   console.log(wifiData[0])
-    //   const wifiMarkers = wifiData.map((wifi, index) => {
-    //     const parseLatStringIntoWifiFloat = parseFloat(wifi.latitude),
-    //           parseLngStringIntowifiFloat = parseFloat(wifi.longitude),
-    //           wifiCompany = wifi.company,
-    //           wifiSpotName = wifi.spot_name
-    //     const wifiMarkers = new google.maps.Marker({
-    //       position: { lat: parseLatStringIntoWifiFloat, lng: parseLngStringIntowifiFloat },
-    //       map: map,
-    //       title: wifiSpotName
-    //     })
-    //     return wifiMarkers
-    //   })
-    //   new MarkerClusterer(map, wifiMarkers, {
-    //       imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
-    //     }
-    //   );
-    // }
   }
 
   /*
@@ -324,6 +300,86 @@
          map.setZoom(17)
        })
      })
+  }
+
+  let totalTyphoonData = []
+  function typhoon(map) {
+    const typhoonPromise = new Promise((resolve, reject) => {
+      $.ajax('https://tcgbusfs.blob.core.windows.net/blobfs/GetDisasterSummary.json ', {
+        success: (data => {
+          resolve(data)
+        })
+      })
+    })
+    typhoonPromise.then(typhoons => {
+      totalTyphoonData = typhoons.DataSet['diffgr:diffgram'].NewDataSet.CASE_SUMMARY
+      const markers = totalTyphoonData.map((typhoon, index) => {
+        const name = typhoon.Name,
+              locationDescription = typhoon.CaseLocationDescription,
+              description = typhoon.CaseDescription,
+              lat = parseFloat(typhoon.Wgs84X),
+              lng = parseFloat(typhoon.Wgs84Y)
+        const infowindow = new google.maps.InfoWindow({
+          content: `
+            <div>標題：${name}</div>
+            <div>敘述：${description}</div>
+            <div>地址：${locationDescription}</div>
+          `
+        })
+        const marker = new google.maps.Marker({
+          position: { lat: lng, lng: lat },
+          map: map,
+          title: name,
+          label: {
+            text: name
+          }
+        })
+        marker.addListener('click', openInfoWindow)
+        function openInfoWindow() {
+          infowindow.open(map, marker)
+        }
+        return marker
+      })
+      markerCluster = new MarkerClusterer(map, markers, {
+          imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
+        }
+      );
+    })
+  }
+
+  function imageUploadFeatures(map) {
+    /*
+     * map 點擊事件
+     */
+    //  let ImageMarker = null
+    //  const ImageUploadWindow = new google.maps.InfoWindow({
+    //    content: `
+    //     <div class='text-center'>
+    //       <h4>來上傳一張照片，並附註你的感想吧</h4>
+    //       <label class="custom-file">
+    //         <input type="file" id="file" class="custom-file-input">
+    //         <span class="custom-file-control">點擊上傳一張照片</span>
+    //       </label>
+    //       <textarea class="form-control" id="exampleTextarea" rows="3" placeholder="寫點什麼..."></textarea>
+    //     </div>
+    //    `
+    //  });
+    //  map.addListener('click', (e) => {
+    //    const lat = e.latLng.lat(),
+    //          lng = e.latLng.lng()
+    //    if (ImageMarker) {
+    //      ImageMarker.setMap(null)
+    //    }
+    //    ImageMarker = new google.maps.Marker({
+    //      position: { lat: lat, lng: lng },
+    //      map: map,
+    //      label: {
+    //        fontFamily: 'Fontawesome',
+    //        text: '\uf030'
+    //      }
+    //    })
+    //    ImageUploadWindow.open(map, ImageMarker)
+    //  })
   }
 
 }(window, document, $))

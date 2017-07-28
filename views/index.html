@@ -6,6 +6,7 @@
     <title>ubike map</title>
     <meta itemprop="name" content="ubike map">
     <meta name="description" content="ubike-map 是由 letfreecode 利用政府開放資料作成，提供基本功能，快速查詢 ubike 各車站狀況，找到離你最近的 ubike 站點，也不用因為沒了車而白跑一趟！">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/global.css">
     <link rel="stylesheet" href="/css/map.css">
     <link rel="stylesheet" href="/css/control.css">
@@ -32,7 +33,11 @@
         <h2>已停止營運地區(點擊查看)</h2>
         <div id="total-no-active-area"></div>
         <h2>其他功能</h2>
-        <div id="other-features"></div>
+        <div id="other-features">
+          <div>
+            <input id="other-features-close-site" type="checkbox" />關閉站點資訊
+          </div>
+        </div>
       </div>
       <!-- <div id="control-panel-bottom-logo">
         <a href="https://github.com/madeinfree">Made By Whien</a>
