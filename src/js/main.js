@@ -312,6 +312,10 @@
       })
     })
     typhoonPromise.then(typhoons => {
+      if (!typhoons.DataSet['diffgr:diffgram'].NewDataSet) {
+        alert('目前沒有取得任何颱風災害資訊。')
+        return
+      }
       totalTyphoonData = typhoons.DataSet['diffgr:diffgram'].NewDataSet.CASE_SUMMARY
       const markers = totalTyphoonData.map((typhoon, index) => {
         const name = typhoon.Name,
