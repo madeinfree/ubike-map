@@ -66,7 +66,7 @@
       createPersonGPSMarker()
       panelController(map)
       // imageUploadFeatures(map)
-      typhoon(map)
+      // typhoon(map)
     }
 
     function getMap() {
